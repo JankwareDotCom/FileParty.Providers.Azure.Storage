@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileParty.Providers.Azure.Storage", "src\FileParty.Providers.Azure.Storage\FileParty.Providers.Azure.Storage.csproj", "{E5B087A2-EF37-4006-BBF8-A74FE280B0ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F72282FF-BF32-43AA-BD14-A0F39F6EFCF2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FA74925A-94CE-4B1D-9BE9-63B184C8231B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileParty.Providers.Azure.Storage.Tests", "test\FileParty.Providers.Azure.Storage.Tests\FileParty.Providers.Azure.Storage.Tests.csproj", "{50424528-B56E-4D07-84A2-741681DFDA69}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E5B087A2-EF37-4006-BBF8-A74FE280B0ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B087A2-EF37-4006-BBF8-A74FE280B0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B087A2-EF37-4006-BBF8-A74FE280B0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B087A2-EF37-4006-BBF8-A74FE280B0ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50424528-B56E-4D07-84A2-741681DFDA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50424528-B56E-4D07-84A2-741681DFDA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50424528-B56E-4D07-84A2-741681DFDA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50424528-B56E-4D07-84A2-741681DFDA69}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5B087A2-EF37-4006-BBF8-A74FE280B0ED} = {F72282FF-BF32-43AA-BD14-A0F39F6EFCF2}
+		{50424528-B56E-4D07-84A2-741681DFDA69} = {FA74925A-94CE-4B1D-9BE9-63B184C8231B}
+	EndGlobalSection
+EndGlobal
