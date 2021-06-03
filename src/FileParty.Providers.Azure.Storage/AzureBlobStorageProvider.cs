@@ -135,7 +135,7 @@ namespace FileParty.Providers.Azure.Storage
             return result;
         }
 
-        public async Task WriteAsync(FilePartyWriteRequest request, CancellationToken cancellationToken)
+        public async Task WriteAsync(FilePartyWriteRequest request, CancellationToken cancellationToken = default)
         {
             var client = GetClient(request.StoragePointer);
             var progressHandler = new Progress<long>();
