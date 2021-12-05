@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using FileParty.Core.Enums;
@@ -67,12 +66,11 @@ namespace FileParty.Providers.Azure.Storage
 
         public Task<IDictionary<string, bool>> ExistsAsync(IEnumerable<string> storagePointers, CancellationToken cancellationToken = new CancellationToken())
         {
-            var baseClient = GetClient();
             return Task.FromResult((IDictionary<string, bool>) storagePointers
                 .Distinct(StringComparer.InvariantCultureIgnoreCase)
                 .ToDictionary(
                     k => k,
-                    v => TryGetStoredItemTypeAsync(v, cancellationToken).Result));
+                    v => TryGetStoredItemTypeAsync(v, cancellationToken).Result != null));
         }
 
         public async Task<StoredItemType?> TryGetStoredItemTypeAsync(string storagePointer, CancellationToken cancellationToken = new CancellationToken())
@@ -80,16 +78,17 @@ namespace FileParty.Providers.Azure.Storage
             var baseClient = GetClient().GetBlobContainerClient(_containerName);
 
             var blobs = baseClient.GetBlobsAsync(prefix: storagePointer.Trim());
-
+            var enumerator = blobs.GetAsyncEnumerator(cancellationToken);
             StoredItemType? type = null;
-            await foreach (var blob in blobs)
+
+            while (await enumerator.MoveNextAsync())
             {
+                var blob = enumerator.Current;
                 type = blob.Name.Trim().TrimEnd(DirectorySeparatorCharacter)
-                    .Equals(
-                        storagePointer.Trim().TrimEnd(DirectorySeparatorCharacter), 
+                    .Equals(storagePointer.Trim().TrimEnd(DirectorySeparatorCharacter), 
                         StringComparison.InvariantCultureIgnoreCase)
-                            ? StoredItemType.File
-                            : StoredItemType.Directory;
+                    ? StoredItemType.File
+                    : StoredItemType.Directory;
                 break;
             }
 
@@ -113,13 +112,13 @@ namespace FileParty.Providers.Azure.Storage
             
             var pathParts =
                 storagePointer
-                    .Split(DirectorySeparatorCharacter, 
-                        StringSplitOptions.RemoveEmptyEntries)
+                    .Split(DirectorySeparatorCharacter) 
+                    .Where(w => !string.IsNullOrWhiteSpace(w))
                     .ToList();
 
             var name = pathParts.Last();
             pathParts.Remove(name);
-            var dirPath = string.Join(DirectorySeparatorCharacter, pathParts);
+            var dirPath = string.Join(DirectorySeparatorCharacter.ToString(), pathParts);
             
             var result = new StoredItemInformation
             {
@@ -196,9 +195,12 @@ namespace FileParty.Providers.Azure.Storage
                 var blobs = containerClient
                     .GetBlobsAsync(prefix: sp.Trim().TrimEnd(DirectorySeparatorCharacter));
 
-                await foreach (var blob in blobs)
+                var enumerator = blobs.GetAsyncEnumerator(cancellationToken);
+                while (await enumerator.MoveNextAsync())
                 {
-                    await GetClient(blob.Name).DeleteAsync(cancellationToken: cancellationToken);
+                    var blob = enumerator.Current;
+                    await GetClient(blob.Name)
+                        .DeleteAsync(cancellationToken: cancellationToken);
                 }
             }
         }
