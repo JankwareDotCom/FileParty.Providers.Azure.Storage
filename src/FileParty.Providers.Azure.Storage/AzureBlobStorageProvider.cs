@@ -140,17 +140,20 @@ namespace FileParty.Providers.Azure.Storage
             var progressHandler = new Progress<long>();
             var totalFileBytes = request.Stream.Length;
 
-            var exists = await client.ExistsAsync(cancellationToken);
-            
-            if (request.WriteMode == WriteMode.Create && exists)
+            if (request.WriteMode != WriteMode.CreateOrReplace)
             {
-                throw Core.Exceptions.Errors.FileAlreadyExistsException;
+                var exists = await client.ExistsAsync(cancellationToken);
+                if (request.WriteMode == WriteMode.Create && exists)
+                {
+                    throw Core.Exceptions.Errors.FileAlreadyExistsException;
+                }
+                
+                if (request.WriteMode == WriteMode.Replace && !exists)
+                {
+                    throw Core.Exceptions.Errors.FileNotFoundException;
+                }
             }
             
-            if (request.WriteMode == WriteMode.Replace && !exists)
-            {
-                throw Core.Exceptions.Errors.FileNotFoundException;
-            }
 
             progressHandler.ProgressChanged += (_, totalBytesTransferred) =>
             {
