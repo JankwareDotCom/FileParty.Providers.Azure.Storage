@@ -8,4 +8,4 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/src/FileParty.Providers.Azure.Storage"
     schedule:
-      interval: "daily"
+      interval: "monthly"
