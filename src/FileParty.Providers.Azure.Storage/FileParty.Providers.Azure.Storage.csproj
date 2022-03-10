@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <Description>Agnostic File Storage, AWS S3 Module</Description>
         <PackageProjectUrl>https://github.com/JankwareDotCom/FileParty.Providers.Azure.Storage</PackageProjectUrl>
         <RepositoryUrl>https://github.com/JankwareDotCom/FileParty.Providers.Azure.Storage</RepositoryUrl>
@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Storage.Blobs" Version="12.10.*" 
+      <PackageReference Include="Azure.Storage.Blobs" Version="[12.5,13)" 
                         IncludeAssets="all"
                         PrivateAssets="compile"/>
       <PackageReference Include="FileParty.Core" Version="1.1.*" />
