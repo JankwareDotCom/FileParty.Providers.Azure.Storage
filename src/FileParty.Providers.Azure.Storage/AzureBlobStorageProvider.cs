@@ -47,12 +47,10 @@ namespace FileParty.Providers.Azure.Storage
         public async Task<Stream> ReadAsync(string storagePointer, CancellationToken cancellationToken = new CancellationToken())
         {
             var client = GetClient(storagePointer);
-            
+
             if (await client.ExistsAsync(cancellationToken))
             {
-                return await client.OpenReadAsync(
-                    new BlobOpenReadOptions(_allowModifications), 
-                    cancellationToken);
+                return await client.OpenReadAsync(_allowModifications, cancellationToken: cancellationToken);
             }
 
             throw Core.Exceptions.Errors.FileNotFoundException;
