@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using FileParty.Core.Enums;
@@ -20,7 +21,8 @@ namespace FileParty.Providers.Azure.Storage
         private readonly string _connectionString;
         private readonly string _containerName;
         private readonly bool _allowModifications;
-        
+        private readonly Action<BlobClientOptions> _blobClientOptions;
+
         public AzureBlobStorageProvider(StorageProviderConfiguration<AzureModule> configuration)
         {
             if (configuration is AzureBlobBaseConfiguration config)
@@ -28,13 +30,20 @@ namespace FileParty.Providers.Azure.Storage
                 _connectionString = config.ConnectionString;
                 _containerName = config.ContainerName;
                 _allowModifications = config.AllowModificationsDuringRead;
+                _blobClientOptions = config.ClientOptions;
             }
             DirectorySeparatorCharacter = configuration.DirectorySeparationCharacter;
         }
 
         BlobServiceClient GetClient()
         {
-            return new BlobServiceClient(_connectionString);
+            if (_blobClientOptions == null)
+                return new BlobServiceClient(_connectionString);
+
+            var opts = new BlobClientOptions();
+            _blobClientOptions(opts);
+
+            return new BlobServiceClient(_connectionString, opts);
         }
 
         BlobClient GetClient(string storagePointer)
