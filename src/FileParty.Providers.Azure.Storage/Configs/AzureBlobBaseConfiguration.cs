@@ -1,4 +1,6 @@
-﻿using FileParty.Core.Models;
+﻿using System;
+using Azure.Storage.Blobs;
+using FileParty.Core.Models;
 
 namespace FileParty.Providers.Azure.Storage
 {
@@ -8,5 +10,6 @@ namespace FileParty.Providers.Azure.Storage
         public string ContainerName { get; set; }
         public bool AllowModificationsDuringRead { get; set; } = true;
         public override char DirectorySeparationCharacter => '/';
+        public Action<BlobClientOptions> ClientOptions { get; set; } = null;
     }
 }
