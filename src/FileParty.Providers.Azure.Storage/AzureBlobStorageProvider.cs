@@ -21,7 +21,8 @@ namespace FileParty.Providers.Azure.Storage
         private readonly string _connectionString;
         private readonly string _containerName;
         private readonly bool _allowModifications;
-        private readonly Action<BlobClientOptions> _blobClientOptions;
+        private readonly AzureBlobBaseConfiguration _azureBlobBaseConfiguration;
+
 
         public AzureBlobStorageProvider(StorageProviderConfiguration<AzureModule> configuration)
         {
@@ -30,18 +31,18 @@ namespace FileParty.Providers.Azure.Storage
                 _connectionString = config.ConnectionString;
                 _containerName = config.ContainerName;
                 _allowModifications = config.AllowModificationsDuringRead;
-                _blobClientOptions = config.ClientOptions;
+                _azureBlobBaseConfiguration = config;
             }
             DirectorySeparatorCharacter = configuration.DirectorySeparationCharacter;
         }
 
         BlobServiceClient GetClient()
         {
-            if (_blobClientOptions == null)
+            if (!_azureBlobBaseConfiguration.ClientOptionsSet)
                 return new BlobServiceClient(_connectionString);
 
             var opts = new BlobClientOptions();
-            _blobClientOptions(opts);
+            _azureBlobBaseConfiguration.ApplyClientOptions(opts);
 
             return new BlobServiceClient(_connectionString, opts);
         }
