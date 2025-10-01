@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Storage.Blobs" Version="[12.13,13)" 
+      <PackageReference Include="Azure.Storage.Blobs" Version="[12.25.1, 13.0.0)" 
                         IncludeAssets="all"
                         PrivateAssets="compile"/>
       <PackageReference Include="FileParty.Core" Version="1.3.*" />
