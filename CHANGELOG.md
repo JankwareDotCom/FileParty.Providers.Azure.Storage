@@ -26,6 +26,14 @@ Checked against consumers pinned to Azure.Storage.Blobs 12.13.0, AWSSDK.S3 3.7.4
 AWSSDK.SecurityToken 3.7.1.199–3.7.400.33, Microsoft.Extensions.DependencyInjection 9.0.10–10.0.12 and
 System.Threading.Tasks.Extensions 4.5.4–4.6.3, on net48 and net6.0.
 
+### Security
+
+- NuGet audit (direct and transitive dependencies, every project and build configuration, including the
+  net48 test target and both compat profiles) reports no known vulnerabilities. Nothing needed patching.
+- The Azure.Storage.Blobs floor stays at 12.13.0: earlier versions are affected by
+  [GHSA-64x4-9hc6-r2h6](https://github.com/advisories/GHSA-64x4-9hc6-r2h6) (moderate).
+- Restores now audit transitive packages too (`NuGetAuditMode=all`).
+
 ### Build and CI
 
 - SDK pinned to .NET 10 via `global.json`. CI and publish use it.

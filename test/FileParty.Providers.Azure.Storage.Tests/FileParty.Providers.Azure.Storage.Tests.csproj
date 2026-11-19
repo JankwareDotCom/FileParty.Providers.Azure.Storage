@@ -9,6 +9,7 @@
         <FilePartyTestNetFx Condition="'$(FilePartyTestNetFx)' == '' AND '$(OS)' == 'Windows_NT'">true</FilePartyTestNetFx>
         <TargetFrameworks Condition="'$(FilePartyTestNetFx)' == 'true'">$(TargetFrameworks);net48</TargetFrameworks>
         <LangVersion>latest</LangVersion>
+        <NuGetAuditMode>all</NuGetAuditMode>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
