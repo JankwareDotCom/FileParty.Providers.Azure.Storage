@@ -1,18 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>2.0.0</Version>
-        <Description>Agnostic File Storage, AWS S3 Module</Description>
+        <Version>2.1.0</Version>
+        <Authors>Jankware</Authors>
+        <Description>Agnostic File Storage, Azure Blob Storage Module</Description>
         <PackageProjectUrl>https://github.com/JankwareDotCom/FileParty.Providers.Azure.Storage</PackageProjectUrl>
         <RepositoryUrl>https://github.com/JankwareDotCom/FileParty.Providers.Azure.Storage</RepositoryUrl>
         <TargetFrameworks>net8.0;net10.0;netstandard2.0;netstandard2.1</TargetFrameworks>
     </PropertyGroup>
 
+    <!--
+      Floors are deliberately low so existing consumers are never forced to upgrade (see README "Dependency ranges").
+      NuGet compiles against the lowest version in each range, so a successful build proves the floor is enough.
+      FileParty packages share one version line: 2.1.0 is the first Core that this provider was built against.
+    -->
     <ItemGroup>
-      <PackageReference Include="Azure.Storage.Blobs" Version="[12.13,13)" 
+      <PackageReference Include="Azure.Storage.Blobs" Version="[12.13.0,13.0.0)"
                         IncludeAssets="all"
                         PrivateAssets="compile"/>
-      <PackageReference Include="FileParty.Core" Version="[1.3.0,)" />
+      <PackageReference Include="FileParty.Core" Version="[2.1.0,3.0.0)" />
     </ItemGroup>
 
 </Project>

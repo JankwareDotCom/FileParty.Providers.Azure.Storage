@@ -1,19 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFrameworks>net10.0</TargetFrameworks>
+        <!--
+          net48 has no lib asset of its own, so it runs the tests against the netstandard2.0 build.
+          On by default on Windows; elsewhere pass -p:FilePartyTestNetFx=true to compile it (running needs Windows or Mono).
+        -->
+        <FilePartyTestNetFx Condition="'$(FilePartyTestNetFx)' == '' AND '$(OS)' == 'Windows_NT'">true</FilePartyTestNetFx>
+        <TargetFrameworks Condition="'$(FilePartyTestNetFx)' == 'true'">$(TargetFrameworks);net48</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <NuGetAuditMode>all</NuGetAuditMode>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="1.3.0">
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
