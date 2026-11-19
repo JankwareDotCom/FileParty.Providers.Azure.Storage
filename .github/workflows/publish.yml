@@ -13,11 +13,11 @@ jobs:
       contents: write   # nuget_publish tags the published commit using GITHUB_TOKEN
       id-token: write   # GitHub OIDC token, exchanged for a nuget.org key below
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          global-json-file: global.json
       # nuget.org trusted publishing: exchange the GitHub OIDC token for a short-lived (1 hour) API key.
       # Needs a matching Trusted Publishing policy on nuget.org (account "Jankware") for this repo + publish.yml.
       - name: NuGet login (trusted publishing)
