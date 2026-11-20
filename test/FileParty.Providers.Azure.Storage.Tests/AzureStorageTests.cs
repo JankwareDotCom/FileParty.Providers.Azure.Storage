@@ -47,8 +47,8 @@ namespace FileParty.Providers.Azure.Storage.Tests
             Assert.False(await fileProvider.ExistsAsync(storagePointer));
             
             // create file
-            await using var inputStream = new MemoryStream();
-            await using var inputWriter = new StreamWriter(inputStream);
+            using var inputStream = new MemoryStream();
+            using var inputWriter = new StreamWriter(inputStream);
             await inputWriter.WriteAsync(new string('*', 12 * 1024)); // 12kb string
             await inputWriter.FlushAsync();
             inputStream.Position = 0;
@@ -73,8 +73,8 @@ namespace FileParty.Providers.Azure.Storage.Tests
             Assert.Equal(StoredItemType.Directory, info2.StoredType);
             
             // try to overwrite file, but fail
-            await using var inputStream2 = new MemoryStream();
-            await using var inputWriter2 = new StreamWriter(inputStream2);
+            using var inputStream2 = new MemoryStream();
+            using var inputWriter2 = new StreamWriter(inputStream2);
             await inputWriter2.WriteAsync(new string('/', 12 * 1024)); // 12kb string
             await inputWriter2.FlushAsync();
             inputStream2.Position = 0;
@@ -87,8 +87,8 @@ namespace FileParty.Providers.Azure.Storage.Tests
             Assert.Equal(Errors.FileAlreadyExistsException.Message, error.Message);
 
             // try to overwrite file, but succeed
-            await using var inputStream3 = new MemoryStream();
-            await using var inputWriter3 = new StreamWriter(inputStream3);
+            using var inputStream3 = new MemoryStream();
+            using var inputWriter3 = new StreamWriter(inputStream3);
             await inputWriter3.WriteAsync(new string('-', 12 * 1024)); // 12kb string
             await inputWriter3.FlushAsync();
             inputStream3.Position = 0;
@@ -96,7 +96,7 @@ namespace FileParty.Providers.Azure.Storage.Tests
             request.WriteMode = WriteMode.CreateOrReplace;
 
             await fileProvider.WriteAsync(request, CancellationToken.None);
-            await using var contents = await fileProvider.ReadAsync(storagePointer, CancellationToken.None);
+            using var contents = await fileProvider.ReadAsync(storagePointer, CancellationToken.None);
             using var reader = new StreamReader(contents);
             var fileString = await reader.ReadToEndAsync();
             Assert.True(fileString.All(a=>a == '-'));
